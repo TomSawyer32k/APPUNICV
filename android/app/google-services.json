@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "566270806232",
+    "project_id": "app-unicv-ff2f9",
+    "storage_bucket": "app-unicv-ff2f9.appspot.com"
+  },
+  "client": [
+   
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566270806232:android:4b767c8b0bcb03e4476fad",
+        "android_client_info": {
+          "package_name": "unicv.esw5.hff"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARjkFfkrlV-yztKMEhP3jLfuXYFp7xmpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

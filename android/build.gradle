@@ -1,0 +1,33 @@
+// Seção buildscript para definir repositórios e dependências
+buildscript {
+    repositories {
+        google() // Repositório do Google
+        mavenCentral() // Repositório Maven Central
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.7.1' // Versão do plugin do Gradle para Android
+        classpath 'com.google.gms:google-services:4.4.2' // Plugin do Google Services
+    }
+}
+
+// Definindo os repositórios para todos os projetos
+allprojects {
+    repositories {
+        google() // Repositório do Google
+        mavenCentral() // Repositório Maven Central
+    }
+}
+
+// Diretório de build da raiz
+rootProject.buildDir = "../build"
+
+// Configuração dos subprojetos
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}" // Define o diretório de build para cada subprojeto
+    project.evaluationDependsOn(":app") // Garante que o projeto app seja avaliado
+}
+
+// Tarefa para limpar os builds
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir // Limpa o diretório de build
+}

@@ -1,0 +1,61 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "app-unicv-ff2f9",
+          "appId": "1:566270806232:android:2e8711d4118e24cd476fad",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "app-unicv-ff2f9",
+          "configurations": {
+            "android": "1:566270806232:android:2e8711d4118e24cd476fad",
+            "ios": "1:566270806232:ios:16f3be892e02ca20476fad",
+            "macos": "1:566270806232:ios:16f3be892e02ca20476fad",
+            "web": "1:566270806232:web:a65cc945929a0fc2476fad",
+            "windows": "1:566270806232:web:d8a3dab9c99fe54f476fad"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "singleProjectMode": true,
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "database": {
+      "port": 9000
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "storage": {
+      "port": 9199
+    },
+    "eventarc": {
+      "port": 9299
+    },
+    "dataconnect": {
+      "port": 9399
+    },
+    "tasks": {
+      "port": 9499
+    },
+    "ui": {
+      "enabled": true
+    }
+  }
+}

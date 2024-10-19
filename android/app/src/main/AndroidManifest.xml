@@ -1,0 +1,38 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="unicv.esw5.hff">
+
+    <application
+        android:label="App Unicv"
+        android:icon="@mipmap/ic_launcher">
+        
+        <activity
+            android:name=".MainActivity"
+            android:label="App Unicv"
+            android:icon="@mipmap/ic_launcher"
+            android:launchMode="singleTop"
+            android:exported="true"> <!-- Adicionando android:exported aqui -->
+            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_id"
+                android:value="default_channel_id" />
+            
+            <meta-data
+                android:name="firebase_messaging_auto_init_enabled"
+                android:value="true" />
+
+            <meta-data
+                android:name="com.google.firebase.analytics.APP_ID"
+                android:value="1:566270806232:android:4b767c8b0bcb03e4476fad" />
+                
+            <meta-data
+                android:name="flutterEmbedding"
+                android:value="2" />
+        </activity>
+
+    </application>
+</manifest>
