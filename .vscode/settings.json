@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/Users/Pc/Documents/Dev/appunicv/linux"
+    "cmake.sourceDirectory": "C:/Users/Pc/Documents/Dev/appunicv/linux",
+    "cmake.ignoreCMakeListsMissing": true
 }

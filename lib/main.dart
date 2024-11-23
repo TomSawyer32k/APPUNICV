@@ -1,177 +1,126 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'tela_login_aluno.dart';
+import 'tela_login_professor.dart';
+import 'login_coordenador.dart';
+import 'tela_cadastro.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const TelaLogin());
+  runApp(const AppUnicv());
 }
 
-class TelaLogin extends StatefulWidget {
-  const TelaLogin({Key? key}) : super(key: key);
+class AppUnicv extends StatelessWidget {
+  const AppUnicv({super.key});
 
   @override
-  State<TelaLogin> createState() => _TelaLoginState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: const TelaEscolhaLogin(),
+      routes: {
+        '/login_coordenador': (context) => const LoginCoordenador(),
+        '/login_aluno': (context) => const TelaLoginAluno(),
+        '/login_professor': (context) => const TelaLoginProfessor(),
+        '/cadastro': (context) => const TelaCadastro(),
+      },
+    );
+  }
 }
 
-class _TelaLoginState extends State<TelaLogin> {
-  final _chaveForm = GlobalKey<FormState>();
-  var _modoLogin = true;
-  var _emailInserido = '';
-  var _senhaInserida = '';
-  String? _mensagem;
+class TelaEscolhaLogin extends StatefulWidget {
+  const TelaEscolhaLogin({super.key});
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  @override
+  _TelaEscolhaLoginState createState() => _TelaEscolhaLoginState();
+}
 
-  void _enviar() async {
-    if (!_chaveForm.currentState!.validate()) {
-      return;
-    }
-
-    _chaveForm.currentState!.save();
-
-    try {
-      if (_modoLogin) {
-      
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: _emailInserido,
-          password: _senhaInserida,
-        );
-        setState(() {
-          _mensagem = 'Login feito com sucesso! Usuário: ${userCredential.user?.email}';
-        });
-      } else {
-      
-        UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-          email: _emailInserido,
-          password: _senhaInserida,
-        );
-        setState(() {
-          _mensagem = 'Usuário Criado: ${userCredential.user?.email}';
-          _modoLogin = true; 
-        });
-      }
-    } on FirebaseAuthException catch (e) {
-      String mensagem = 'Falha na autenticação.';
-      if (e.code == 'weak-password') {
-        mensagem = 'A senha fornecida é muito fraca.';
-      } else if (e.code == 'email-already-in-use') {
-        mensagem = 'A conta já existe para esse email.';
-      } else if (e.code == 'user-not-found') {
-        mensagem = 'Nenhum usuário encontrado com esse email.';
-      } else if (e.code == 'wrong-password') {
-        mensagem = 'Senha incorreta.';
-      }
-     
-      setState(() {
-        _mensagem = mensagem;
-      });
+class _TelaEscolhaLoginState extends State<TelaEscolhaLogin> {
+  void _navigateToLogin(BuildContext context, String userType) {
+    
+    switch (userType) {
+      case 'Aluno':
+        Navigator.pushNamed(context, '/login_aluno');
+        break;
+      case 'Professor':
+        Navigator.pushNamed(context, '/login_professor');
+        break;
+      case 'Coordenador':
+        Navigator.pushNamed(context, '/login_coordenador');
+        break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.green, 
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 30, bottom: 20, left: 20, right: 20),
-                  width: 200,
-                  
-                  child: Image.network(
-                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYtHHg240d9Z6cNuwnCxratgc--TDPLvbZBppuw-jYWMUJOx4hGRe9nsiMLuK5OfG3UKQ&usqp=CAU',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Card(
-                  margin: const EdgeInsets.all(20),
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Form(
-                        key: _chaveForm,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextFormField(
-                              decoration: const InputDecoration(labelText: 'Endereço de Email'),
-                              keyboardType: TextInputType.emailAddress,
-                              autocorrect: false,
-                              textCapitalization: TextCapitalization.none,
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty || !value.contains('@')) {
-                                  return 'Por favor, insira um endereço de email válido.';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _emailInserido = value!;
-                              },
-                            ),
-                            if (!_modoLogin)
-                              TextFormField(
-                                decoration: const InputDecoration(labelText: 'Nome de Usuário'),
-                                enableSuggestions: false,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty || value.trim().length < 4) {
-                                    return 'Por favor, insira pelo menos 4 caracteres.';
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value) {
-                                },
-                              ),
-                            TextFormField(
-                              decoration: const InputDecoration(labelText: 'Senha'),
-                              obscureText: true,
-                              validator: (value) {
-                                if (value == null || value.trim().length < 6) {
-                                  return 'A senha deve ter pelo menos 6 caracteres.';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _senhaInserida = value!;
-                              },
-                            ),
-                            const SizedBox(height: 12),
-                            ElevatedButton(
-                              onPressed: _enviar,
-                              child: Text(_modoLogin ? 'Entrar' : 'Cadastrar'),
-                            ),
-                            const SizedBox(height: 6),
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  _modoLogin = !_modoLogin;
-                                  _mensagem = null; 
-                                });
-                              },
-                              child: Text(_modoLogin ? 'Criar uma conta' : 'Já tenho uma conta'),
-                            ),
-                            const SizedBox(height: 12),
-                            if (_mensagem != null) 
-                              Padding(
-                                padding: const EdgeInsets.only(top: 20),
-                                child: Text(
-                                  _mensagem!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 16),
-                                ),
-                              ),
-                          ],
-                        ),
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              
+              Image.network(
+                'https://unicv.curitiba.br/wp-content/uploads/2023/05/cropped-FAVICON.png',
+                height: 150,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child; 
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                (loadingProgress.expectedTotalBytes ?? 1)
+                            : null,
                       ),
-                    ),
-                  ),
+                    ); 
+                  }
+                },
+              ),
+              const SizedBox(height: 100), 
+              const Text(
+                'Bem-vindo ao App UniCV!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 30),
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Escolha o tipo de usuário',
+                ),
+                items: const [
+                  DropdownMenuItem(value: 'Aluno', child: Text('Aluno')),
+                  DropdownMenuItem(value: 'Professor', child: Text('Professor')),
+                  DropdownMenuItem(value: 'Coordenador', child: Text('Coordenador')),
+                ],
+                onChanged: (value) {
+                  if (value != null) {
+                    _navigateToLogin(context, value);
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/cadastro');
+                },
+                icon: const Icon(Icons.app_registration),
+                label: const Text('Cadastrar-se'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Colors.green,
+                ),
+              ),
+            ],
           ),
         ),
       ),

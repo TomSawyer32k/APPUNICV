@@ -10,7 +10,8 @@
             android:label="App Unicv"
             android:icon="@mipmap/ic_launcher"
             android:launchMode="singleTop"
-            android:exported="true"> <!-- Adicionando android:exported aqui -->
+            android:exported="true">
+            android:hardwareAccelerated="false"
             
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
