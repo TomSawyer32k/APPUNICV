@@ -1,3 +1,3 @@
 # appunicv
 
-App feito por Henrique Rodrigues, Felipe Mantovani e Fernanda Pope. para teste usar a conta testeteste@gmail.com e a senha 123456
+App feito por Henrique Rodrigues,Fernanda Pope (5ESW) e Felipe Mantovani (5ADS). Rodar em Emulador
